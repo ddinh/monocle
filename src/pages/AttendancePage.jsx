@@ -31,7 +31,7 @@ export default class AttendancePage extends React.Component {
         {this.renderMessage()}
 
         <div>
-          {status == 'locked' ? (
+          {status === 'locked' ? (
             <button className="attendance" onClick={this.handleUnlock}>
               Unlock Attendance
             </button>
@@ -47,7 +47,7 @@ export default class AttendancePage extends React.Component {
 
   renderMessage = () => {
     const { status } = this.state;
-    if (status == 'locked') {
+    if (status === 'locked') {
       return <div className="message">Attendance is currenty locked.</div>;
     } else {
       return <div className="message">Waiting for users...</div>;

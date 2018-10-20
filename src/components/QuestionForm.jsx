@@ -1,5 +1,7 @@
 import React from 'react';
 import './QuestionForm.css';
+import socket from '../socket.js'
+import { Redirect } from 'react-router-dom';
 
 export default class QuestionForm extends React.Component {
   constructor(props) {
@@ -8,12 +10,30 @@ export default class QuestionForm extends React.Component {
       question: '',
       type: 1,
       numChoices: 4,
-      choices: {}
+      choices: {},
+      redirect: false
     };
+  }
+
+  componentDidMount() {
+    socket.onmessage = e => {
+      const obj = JSON.parse(e.data)
+
+      if (obj.type === 'createQuestionResponse') {
+        const data = JSON.parse(obj.data);
+
+        if (data.status === 0) {
+          this.setState({
+            redirect: true
+          })
+        }
+      }
+    }
   }
 
   handleSelectType = e => {
     this.setState({
+      ...this.state,
       type: e.target.value
     });
   };
@@ -48,17 +68,23 @@ export default class QuestionForm extends React.Component {
     e.preventDefault()
     const data = this.state;
     data.choices = Object.values(data.choices)
+    delete data.redirect
 
     const payload = {
       type: "createQuestion",
       data: JSON.stringify(data)
     }
 
-    console.log(payload);
+    socket.send(JSON.stringify(payload));
   };
 
   render() {
-    const { question } = this.state;
+    const { question, redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to="/question" />
+    }
+
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -90,7 +116,7 @@ export default class QuestionForm extends React.Component {
   renderMultipleChoiceFields = () => {
     const { type, numChoices } = this.state;
 
-    if (type == 1) {
+    if (type === 1) {
       return (
         <div>
           <div>
@@ -113,7 +139,7 @@ export default class QuestionForm extends React.Component {
 
   renderChoiceField(number) {
     return (
-      <div className="choice">
+      <div className="choice" key={number}>
         <div className="choice-number">{number})</div>
         <input type="text" onChange={this.handleChoiceChange(number)}/>
       </div>
