@@ -1,4 +1,5 @@
 import React from 'react';
+import './QuestionForm.css';
 
 export default class QuestionForm extends React.Component {
   constructor(props) {
@@ -65,6 +66,7 @@ export default class QuestionForm extends React.Component {
             <label htmlFor="">Question</label>
             <input
               type="text"
+              className="question"
               value={question}
               onChange={this.handleQuestionChange}
             />
@@ -99,6 +101,7 @@ export default class QuestionForm extends React.Component {
               onChange={this.handleChangeNumChoices}
             />
 
+            <label htmlFor="">Answer Choices</label>
             {[...Array(numChoices).keys()].map(i => this.renderChoiceField(i))}
           </div>
         </div>
@@ -110,8 +113,8 @@ export default class QuestionForm extends React.Component {
 
   renderChoiceField(number) {
     return (
-      <div>
-        <label htmlFor="">{number}</label>
+      <div className="choice">
+        <div className="choice-number">{number})</div>
         <input type="text" onChange={this.handleChoiceChange(number)}/>
       </div>
     );
