@@ -1,7 +1,9 @@
 import React from 'react';
 import './QuestionForm.css';
-import socket from '../socket.js'
+import socket from '../socket.js';
 import { Redirect } from 'react-router-dom';
+
+var socketRef;
 
 export default class QuestionForm extends React.Component {
   constructor(props) {
@@ -16,8 +18,8 @@ export default class QuestionForm extends React.Component {
   }
 
   componentDidMount() {
-    socket.onmessage = e => {
-      const obj = JSON.parse(e.data)
+    socketRef = e => {
+      const obj = JSON.parse(e.data);
 
       if (obj.type === 'createQuestionResponse') {
         const data = JSON.parse(obj.data);
@@ -25,10 +27,16 @@ export default class QuestionForm extends React.Component {
         if (data.status === 0) {
           this.setState({
             redirect: true
-          })
+          });
         }
       }
-    }
+    };
+
+    socket.addEventListener('message', socketRef);
+  }
+
+  componentWillUnmount() {
+    socket.removeEventListener('message', socketRef);
   }
 
   handleSelectType = e => {
@@ -47,33 +55,33 @@ export default class QuestionForm extends React.Component {
     }
   };
 
-  handleChoiceChange = (i) => (e) => {
+  handleChoiceChange = i => e => {
     const choices = this.state.choices;
     choices[i] = e.target.value;
 
     this.setState({
       ...this.state,
       choices: choices
-    })
-  }
+    });
+  };
 
-  handleQuestionChange = (e) => {
+  handleQuestionChange = e => {
     this.setState({
       ...this.state,
       question: e.target.value
-    })
-  }
+    });
+  };
 
-  handleSubmit = (e) => {
-    e.preventDefault()
+  handleSubmit = e => {
+    e.preventDefault();
     const data = this.state;
-    data.choices = Object.values(data.choices)
-    delete data.redirect
+    data.choices = Object.values(data.choices);
+    delete data.redirect;
 
     const payload = {
-      type: "createQuestion",
+      type: 'createQuestion',
       data: JSON.stringify(data)
-    }
+    };
 
     socket.send(JSON.stringify(payload));
   };
@@ -82,7 +90,7 @@ export default class QuestionForm extends React.Component {
     const { question, redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to="/question" />
+      return <Redirect to="/question" />;
     }
 
     return (
@@ -141,7 +149,7 @@ export default class QuestionForm extends React.Component {
     return (
       <div className="choice" key={number}>
         <div className="choice-number">{number})</div>
-        <input type="text" onChange={this.handleChoiceChange(number)}/>
+        <input type="text" onChange={this.handleChoiceChange(number)} />
       </div>
     );
   }

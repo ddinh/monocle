@@ -1,30 +1,74 @@
 import React, { Component } from 'react';
 import './App.css';
 import QuestionPage from './pages/QuestionPage';
+import QuestionFormPage from './pages/QuestionFormPage';
 import AttendancePage from './pages/AttendancePage';
 import PresentationPage from './pages/PresentationPage';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import socket from './socket';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      connected: true
+    };
+  }
+
   componentDidMount() {
+    var socketOpen = false;
+
+    setTimeout(() => {
+      if (!socketOpen) {
+        this.setState({
+          connected: false
+        });
+      }
+    }, 2000);
+
+    socket.addEventListener('open', () => {
+      this.setState({
+        connected: true
+      });
+
+      socketOpen = true;
+    });
+
+    socket.addEventListener('close', () => {
+      this.setState({
+        connected: false
+      })
+    })
   }
 
   render() {
+    const { connected } = this.state;
+
     return (
       <Router>
         <div className="App">
+          {this.renderLoading()}
           <Navbar />
-          <Route
-            path="/question/new"
-            component={() => <QuestionPage socket={this.props.socket} />}
-          />
+          <Route path="/question" component={QuestionPage} />
+          <Route path="/question/new" component={QuestionFormPage} />
           <Route path="/attendance" component={AttendancePage} />
           <Route path="/presentation" component={PresentationPage} />
         </div>
       </Router>
     );
   }
+
+  renderLoading = () => {
+    const { connected } = this.state;
+
+    if (!connected) {
+      return <div className="loading">Establishing a connection...</div>;
+    } else {
+      return <div />;
+    }
+  };
 }
 
 export default App;

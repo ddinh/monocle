@@ -1,12 +1,11 @@
 import React from 'react';
-import QuestionForm from '../components/QuestionForm';
-import './QuestionPage.css';
+import Question from '../components/Question';
 
 export default class QuestionPage extends React.Component {
   render() {
     return (
       <div className="question-page">
-        <QuestionForm />
+        <Question />
       </div>
     );
   }
