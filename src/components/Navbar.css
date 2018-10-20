@@ -1,0 +1,24 @@
+.navbar {
+  width: 100%;
+  flex: 1 1 auto;
+  background: #582c83;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  color: #ececec;
+  padding: 0px 42px;
+}
+
+.logo {
+  font-size: 22px;
+}
+
+.link a {
+  margin-left: 32px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
