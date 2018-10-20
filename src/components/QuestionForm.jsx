@@ -50,7 +50,7 @@ export default class QuestionForm extends React.Component {
     data.choices = Object.values(data.choices)
 
     const payload = {
-      type: "QuestionPOST",
+      type: "createQuestion",
       data: JSON.stringify(data)
     }
 
