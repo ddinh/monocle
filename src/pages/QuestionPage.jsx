@@ -1,81 +1,40 @@
 import React from 'react';
 import './QuestionPage.css';
-import socket from '../socket';
 import { Redirect } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
-var socketRef;
-var socketRef2;
-
-export default class QuestionPage extends React.Component {
+class QuestionPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       id: null,
-      answers: {},
-      question: {},
       unlocked: false,
       redirect: false
     };
   }
 
   componentDidMount() {
-    socketRef = () => {
-      socket.send(
-        JSON.stringify({
-          type: 'getQuestionDetails',
-          data: JSON.stringify({ id: '0' })
-        })
-      );
-    };
-
-    socketRef2 = e => {
-      const response = JSON.parse(e.data);
-
-      if (response.type === 'answerQuestion') {
-        const answer = JSON.parse(response.data);
-
-        this.setState({
-          ...this.state,
-          answers: { ...this.state.answers, [answer.name]: answer.answer }
-        });
-      }
-
-      if (response.type === 'getQuestionDetailsResponse') {
-        console.log('---------');
-        console.log(response);
-      }
-    };
-
-    socket.addEventListener('open', socketRef);
-    socket.addEventListener('message', socketRef2);
-  }
-
-  componentWillUnmount() {
-    socket.removeEventListener('open', socketRef);
-    socket.removeEventListener('message', socketRef2);
+    const { store } = this.props;
+    store.send('getQuestionDetails', { id: 0 });
   }
 
   handleLock = () => {
-    socket.send(
-      JSON.stringify({
-        type: 'lockQuestion',
-        id: this.state.id
-      })
-    );
+    this.props.store.send('lockQuestion', { id: this.state.id });
   };
 
   render() {
-    const { answers, redirect } = this.state;
+    const { redirect } = this.state;
+    const { answers } = this.props.store;
 
     if (redirect) {
-      return <Redirect to="/questions/new" />;
+      return <Redirect to="/question/new" />;
     }
 
     return (
       <div className="question-page">
         <div className="question-col">
-          <div>Question</div>
+          {this.renderQuestion()}
           {this.renderButton()}
         </div>
 
@@ -91,7 +50,9 @@ export default class QuestionPage extends React.Component {
           <div className="col">
             <div className="row row-header">Answer</div>
             {Object.keys(answers).map(name => (
-              <div className="row row-item">{answers[name]}</div>
+              <div className="row row-item" key={name}>
+                {answers[name]}
+              </div>
             ))}
           </div>
         </div>
@@ -105,17 +66,35 @@ export default class QuestionPage extends React.Component {
     });
   };
 
+  handleRemove = () => {
+    const { store } = this.store;
+    store.send('removeQuestion');
+  };
+
   renderButton() {
-    const { unlocked } = this.state;
+    const { unlocked, question } = this.state;
 
     if (unlocked) {
       return <button onClick={this.handleLock}>Lock Answering</button>;
     } else {
-      return <button onClick={this.handleNew}>New Question</button>;
+      return (
+        <div>
+          <button onClick={this.handleNew}>New Question</button>
+          { question ? <button onClick={this.handleRemove}>Hide Question</button> : '' }
+        </div>
+      );
     }
   }
 
   renderQuestion() {
-    return <div>Name</div>;
+    const { question } = this.props.store;
+
+    if (question) {
+      return <div>Question: {question.question}</div>;
+    } else {
+      return <div className="message">No question in progress.</div>
+    }
   }
 }
+
+export default inject('store')(observer(QuestionPage));

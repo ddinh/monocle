@@ -1,11 +1,9 @@
 import React from 'react';
 import './QuestionForm.css';
-import socket from '../socket.js';
 import { Redirect } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
-var socketRef;
-
-export default class QuestionForm extends React.Component {
+class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,28 +13,6 @@ export default class QuestionForm extends React.Component {
       choices: {},
       redirect: false
     };
-  }
-
-  componentDidMount() {
-    socketRef = e => {
-      const obj = JSON.parse(e.data);
-
-      if (obj.type === 'createQuestionResponse') {
-        const data = JSON.parse(obj.data);
-
-        if (data.status === 0) {
-          this.setState({
-            redirect: true
-          });
-        }
-      }
-    };
-
-    socket.addEventListener('message', socketRef);
-  }
-
-  componentWillUnmount() {
-    socket.removeEventListener('message', socketRef);
   }
 
   handleSelectType = e => {
@@ -78,12 +54,7 @@ export default class QuestionForm extends React.Component {
     data.choices = Object.values(data.choices);
     delete data.redirect;
 
-    const payload = {
-      type: 'createQuestion',
-      data: JSON.stringify(data)
-    };
-
-    socket.send(JSON.stringify(payload));
+    this.props.store.send('createQuestion', data);
   };
 
   render() {
@@ -154,3 +125,5 @@ export default class QuestionForm extends React.Component {
     );
   }
 }
+
+export default inject('store')(observer(QuestionForm));

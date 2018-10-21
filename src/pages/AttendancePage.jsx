@@ -1,88 +1,45 @@
 import React from 'react';
 import './AttendancePage.css';
-import socket from '../socket';
+import { inject, observer } from 'mobx-react';
 
-var socketRef;
-var socketRef2;
-
-export default class AttendancePage extends React.Component {
+class AttendancePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // can be 'locked' or 'unlocked'
-      status: 'locked',
-      users: ['abc', '123', 'a asoidjf oisjfio aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']
-    };
   }
 
   componentDidMount() {
-    socketRef = () => {
-      socket.send(
-        JSON.stringify({
-          type: 'getStudents'
-        })
-      );
-    };
-
-    socketRef2 = e => {
-      const response = JSON.parse(e.data);
-
-      if (response.type === 'getStudentsResponse') {
-        const data = JSON.parse(response.data);
-
-        this.setState({
-          ...this.state,
-          users: data.users,
-          unlocked: data.unlocked
-        });
-      }
-    };
-
-    socket.addEventListener('open', socketRef);
-    socket.addEventListener('message', socketRef2);
-  }
-
-  componentWillUnmount() {
-    socket.removeEventListener('open', socketRef);
-    socket.removeEventListener('message', socketRef2);
+    const { store } = this.props;
+    store.send('getStudents');
+    
+    setTimeout(() => {
+      store.send('getAttendanceCode');
+    }, 1000);
   }
 
   handleUnlock = () => {
-    socket.send(
-      JSON.stringify({
-        type: 'startAttendance'
-      })
-    );
-
-    this.setState({
-      ...this.state,
-      status: 'unlocked'
-    });
+    const { store } = this.props;
+    store.send('startAttendance');
   };
 
   handleLock = () => {
-    socket.send(
-      JSON.stringify({
-        type: 'stopAttendance'
-      })
-    );
-
-    this.setState({
-      ...this.state,
-      status: 'locked'
-    });
+    const { store } = this.props;
+    store.send('stopAttendance');
   };
 
   render() {
-    const { status } = this.state;
+    const { attendanceUnlocked, code } = this.props.store;
+    const { users } = this.props.store;
+
     return (
       <div className="attendance-page">
         <div className="col attendance-col">
           <div>
             {this.renderMessage()}
 
+            <div className="code">{code}</div>
+
             <div>
-              {status === 'locked' ? (
+              {!attendanceUnlocked ? (
                 <button className="attendance" onClick={this.handleUnlock}>
                   Unlock Attendance
                 </button>
@@ -96,7 +53,7 @@ export default class AttendancePage extends React.Component {
         </div>
         <div className="col student-col">
           <div className="row row-header">User</div>
-          {this.state.users.map(name => (
+          {users.map(name => (
             <div className="row row-item" key={name}>
               {name}
             </div>
@@ -107,11 +64,13 @@ export default class AttendancePage extends React.Component {
   }
 
   renderMessage = () => {
-    const { status } = this.state;
-    if (status === 'locked') {
-      return <div className="message">Attendance is currenty locked.</div>;
-    } else {
+    const { attendanceUnlocked } = this.props.store;
+    if (attendanceUnlocked) {
       return <div className="message">Waiting for users...</div>;
+    } else {
+      return <div className="message">Attendance is currenty locked.</div>;
     }
   };
 }
+
+export default inject('store')(observer(AttendancePage));
