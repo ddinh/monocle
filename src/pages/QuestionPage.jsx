@@ -78,7 +78,7 @@ class QuestionPage extends React.Component {
       return <button onClick={this.handleLock}>Lock Answering</button>;
     } else {
       return (
-        <div>
+        <div className="buttons">
           <button onClick={this.handleNew}>
             <i className="material-icons">question_answer</i>
             New Question
@@ -92,7 +92,12 @@ class QuestionPage extends React.Component {
   renderHideQuestion() {
     const { question } = this.props.store;
     if (question) {
-      return <button onClick={this.handleRemove}>Remove Question</button>;
+      return (
+        <button onClick={this.handleRemove}>
+          <i className="material-icons">delete</i>
+          Remove Question
+        </button>
+      );
     } else {
       return <div />;
     }
@@ -102,10 +107,31 @@ class QuestionPage extends React.Component {
     const { question } = this.props.store;
 
     if (question) {
-      return <div className="message">Question: {question.question}</div>;
+      return (
+        <div>
+          <div className="message">Question: {question.question}</div>
+          {this.renderChoices()}
+        </div>
+      );
     } else {
       return <div className="message">No question in progress.</div>;
     }
+  }
+
+  renderChoices() {
+    const { question } = this.props.store;
+
+    if (question.type === 0) {
+      return;
+    }
+
+    return [...Array(question.numChoices).keys()].map(i => {
+      return (
+        <div key={i} className="q-choice">
+          {String.fromCharCode(65 + i)})<span>{question.choices[i]}</span>
+        </div>
+      );
+    });
   }
 }
 

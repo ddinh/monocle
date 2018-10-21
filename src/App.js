@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Store from './store';
 import { Provider } from 'mobx-react';
 import Loading from './components/Loading';
+import TranscriptionPage from './pages/TranscriptionPage';
 
 const store = new Store();
 
@@ -27,6 +28,7 @@ class App extends Component {
             <Route path="/question/new" component={QuestionFormPage} />
             <Route path="/attendance" component={AttendancePage} />
             <Route path="/presentation" component={PresentationPage} />
+            <Route path="/transcription" component={TranscriptionPage} />
           </div>
         </Router>
       </Provider>

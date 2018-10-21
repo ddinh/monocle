@@ -8,6 +8,7 @@ class Store {
   question = null;
   queue = [];
   code = null;
+  transcription = '';
   questionUnlocked = false;
   redirectQuestion = false;
   attendanceUnlocked = false;
@@ -47,11 +48,13 @@ class Store {
         });
       } else if (response.type === 'createQuestionResponse') {
         _this.redirectQuestion = true;
+        _this.answers = {};
         setTimeout(() => {
           _this.redirectQuestion = false;
         }, 10);
       } else if (response.type === 'removeQuestionResponse') {
         _this.question = null;
+        _this.answers = {};
       } else if (response.type === 'getStudentsResponse') {
         const data = JSON.parse(response.data);
         _this.users = data.users;
@@ -78,6 +81,15 @@ class Store {
         users.push(user);
 
         _this.users = Array.from(new Set(users));
+      } else if (response.type === 'speechToText') {
+        const data = JSON.parse(response.data);
+        const newValue = _this.transcription + data.text;
+
+        if (newValue.length < 266) {
+          _this.transcription = newValue
+        } else {
+          _this.transcription = ''
+        }
       }
     };
 
@@ -130,5 +142,6 @@ export default decorate(Store, {
   attendanceUnlocked: observable,
   question: observable,
   redirectQuestion: observable,
+  transcription: observable,
   connect: action
 });

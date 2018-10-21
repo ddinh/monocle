@@ -46,6 +46,15 @@ select {
   align-items: center;
 }
 
+.q-choice {
+  font-size: 22px;
+  margin-top: 12px;
+}
+
+.q-choice span {
+  margin-left: 14px;
+}
+
 .choice input {
   width: 300px;
 }

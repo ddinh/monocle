@@ -20,6 +20,10 @@ export default class Navbar extends React.Component {
             <i className="material-icons">question_answer</i>
             Current Question
           </Link>
+          <Link to="/transcription">
+            <i className="material-icons">record_voice_over</i>
+            Speech To Text
+          </Link>
         </div>
         <a className="presentation" href="/presentation" target="_blank">
           Presentation

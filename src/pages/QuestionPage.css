@@ -17,3 +17,7 @@
 .question-page button {
   margin-right: 12px;
 }
+
+.buttons {
+  display: flex;
+}
