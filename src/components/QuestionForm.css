@@ -13,7 +13,7 @@ form button {
 }
 
 input.question {
-  width: 800px;
+  width: 600px;
 }
 
 input {
@@ -26,7 +26,7 @@ input {
 }
 
 .choice-number {
-  font-size: 26px;
+  font-size: 18px;
   width: 38px;
 }
 

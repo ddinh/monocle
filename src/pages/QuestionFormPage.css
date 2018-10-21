@@ -1,3 +1,5 @@
 .question-form-page {
   padding: 42px;
+  display: flex;
+  justify-content: center;
 }

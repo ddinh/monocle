@@ -1,15 +1,13 @@
 .attendance-page {
-  height: calc(100% - 60px);
   padding: 42px;
-  /* display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center; */
-  /* flex-wrap: wrap; */
+  display: flex;
+  height: calc(100% - 60px);
 }
 
-/* .attendance-page .message {
-  flex: 1 1 100%;
-  text-align: center;
-  font-size: 52px;
-} */
+.attendance-col {
+  border-right: 1px solid #e5e5e5;
+}
+
+.student-col {
+  padding-left: 42px;
+}

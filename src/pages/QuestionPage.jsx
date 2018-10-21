@@ -75,13 +75,13 @@ export default class QuestionPage extends React.Component {
 
         <div className="answer-col row">
           <div className="col">
-            <div className="row">Name</div>
+            <div className="row row-header">Name</div>
             {Object.keys(answers).map(name => (
-              <div className="row row-item">{name}</div>
+              <div className="row row-item" key={name}>{name}</div>
             ))}
           </div>
           <div className="col">
-            <div className="row">Answer</div>
+            <div className="row row-header">Answer</div>
             {Object.keys(answers).map(name => (
               <div className="row row-item">{answers[name]}</div>
             ))}

@@ -2,6 +2,7 @@ html, body {
   margin: 0px;
   padding: 0px;
   height: 100%;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #root, .App {
@@ -51,4 +52,10 @@ button {
 
 .row-item {
   margin: 12px 0px;
+}
+
+.row-header {
+  font-size: 22px;
+  opacity: 0.8;
+  font-weight: 600;
 }

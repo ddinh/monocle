@@ -115,7 +115,7 @@ export default class QuestionForm extends React.Component {
 
           {this.renderMultipleChoiceFields()}
 
-          <button onClick={this.handleSubmit}>Submit</button>
+          <button onClick={this.handleSubmit}>Create Question</button>
         </form>
       </div>
     );
