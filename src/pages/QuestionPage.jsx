@@ -96,6 +96,7 @@ class QuestionPage extends React.Component {
 
   renderHideQuestion() {
     const { question } = this.props.store;
+
     if (question) {
       return (
         <button onClick={this.handleRemove}>

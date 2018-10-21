@@ -56,7 +56,7 @@ class Store {
           _this.redirectQuestion = false;
         }, 10);
       } else if (response.type === 'removeQuestionResponse') {
-        _this.question = {};
+        _this.question = null;
         _this.answers = {};
       } else if (response.type === 'getStudentsResponse') {
         const data = JSON.parse(response.data);
