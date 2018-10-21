@@ -89,7 +89,10 @@ class QuestionForm extends React.Component {
 
           {this.renderMultipleChoiceFields()}
 
-          <button onClick={this.handleSubmit}>Create Question</button>
+          <button onClick={this.handleSubmit}>
+            <i className="material-icons">check</i>
+            Create Question
+          </button>
         </form>
       </div>
     );

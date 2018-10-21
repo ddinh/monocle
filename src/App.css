@@ -64,3 +64,12 @@ button {
 .message {
   font-size: 24px;
 }
+
+button {
+  display: flex;
+  align-items: center;
+}
+
+button i {
+  margin-right: 12px;
+}

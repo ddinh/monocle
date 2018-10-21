@@ -37,10 +37,12 @@ class AttendancePage extends React.Component {
             <div>
               {!attendanceUnlocked ? (
                 <button className="attendance" onClick={this.handleUnlock}>
+                  <i className="material-icons">lock_open</i>
                   Unlock Attendance
                 </button>
               ) : (
                 <button className="attendance" onClick={this.handleLock}>
+                  <i className="material-icons">lock</i>
                   Lock Attendance
                 </button>
               )}
@@ -51,6 +53,7 @@ class AttendancePage extends React.Component {
           <div className="row row-header">Users</div>
           {users.map(name => (
             <div className="row row-item" key={name}>
+              <i className="material-icons">person</i>
               {name}
             </div>
           ))}

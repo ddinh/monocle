@@ -24,9 +24,16 @@
 }
 
 .links a {
-  margin-left: 32px;
+  margin-left: 42px;
   color: inherit;
   text-decoration: none;
+}
+
+.links i {
+  position: relative;
+  top: 4px;
+  margin-right: 8px;
+  font-size: 18px;
 }
 
 .links a:hover {

@@ -79,7 +79,10 @@ class QuestionPage extends React.Component {
     } else {
       return (
         <div>
-          <button onClick={this.handleNew}>New Question</button>
+          <button onClick={this.handleNew}>
+            <i className="material-icons">question_answer</i>
+            New Question
+          </button>
           {this.renderHideQuestion()}
         </div>
       );

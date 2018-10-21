@@ -11,3 +11,12 @@
 .student-col {
   padding-left: 42px;
 }
+
+.student-col i {
+  color: #582c83;
+  margin-right: 12px;
+}
+
+.student-col .row-item {
+  color: #555F61;
+}

@@ -33,6 +33,7 @@ class Store {
 
     ws.onmessage = function(e) {
       const response = JSON.parse(e.data);
+      console.log('Receiving message: ')
       console.log(response);
 
       if (response.type === 'answerQuestion') {
