@@ -1,5 +1,6 @@
 import React from 'react';
 import './AttendancePage.css';
+import socket from '../socket';
 
 export default class AttendancePage extends React.Component {
   constructor(props) {
@@ -11,6 +12,10 @@ export default class AttendancePage extends React.Component {
   }
 
   handleUnlock = () => {
+    socket.send(JSON.stringify({
+      type: 'startAttendance'
+    }));
+
     this.setState({
       ...this.state,
       status: 'unlocked'
@@ -18,6 +23,10 @@ export default class AttendancePage extends React.Component {
   };
 
   handleLock = () => {
+    socket.send(JSON.stringify({
+      type: 'stopAttendance'
+    }));
+
     this.setState({
       ...this.state,
       status: 'locked'

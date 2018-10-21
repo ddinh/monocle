@@ -1,0 +1,15 @@
+.question-page {
+  padding: 42px;
+  display: flex;
+  height: calc(100% - 60px);
+}
+
+.question-col {
+  flex: 1 1 50%;
+  border-right: 1px solid #e5e5e5;
+}
+
+.answer-col {
+  flex: 1 1 50%;
+  padding-left: 42px;
+}

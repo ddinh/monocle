@@ -42,7 +42,7 @@ export default class QuestionForm extends React.Component {
   handleSelectType = e => {
     this.setState({
       ...this.state,
-      type: e.target.value
+      type: parseInt(e.target.value)
     });
   };
 
@@ -97,7 +97,7 @@ export default class QuestionForm extends React.Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <div>
-            <label htmlFor="">Question</label>
+            <label className="question">Question</label>
             <input
               type="text"
               className="question"

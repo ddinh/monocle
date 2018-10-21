@@ -1,5 +1,6 @@
 .navbar {
   width: 100%;
+  box-sizing: border-box;
   flex: 1 1 auto;
   background: #582c83;
   height: 60px;

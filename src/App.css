@@ -10,6 +10,7 @@ html, body {
 
 * {
   outline: none;
+  box-sizing: border-box;
 }
 
 .loading {
@@ -23,4 +24,31 @@ html, body {
   justify-content: center;
   align-items: center;
   font-size: 32px;
+}
+
+button {
+  background: #582c83;
+  border: none;
+  color: #ececec;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 22px;
+  border-radius: 4px;
+  margin-top: 28px;
+}
+
+.col {
+  flex: 1 1 50%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.row {
+  display: flex;
+  flex: 1 1 100%;
+}
+
+.row-item {
+  margin: 12px 0px;
 }

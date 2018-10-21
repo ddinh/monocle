@@ -26,7 +26,7 @@ class App extends Component {
           connected: false
         });
       }
-    }, 2000);
+    }, 1000);
 
     socket.addEventListener('open', () => {
       this.setState({
@@ -37,10 +37,12 @@ class App extends Component {
     });
 
     socket.addEventListener('close', () => {
-      this.setState({
-        connected: false
-      })
-    })
+      if (socketOpen) {
+        this.setState({
+          connected: false
+        });
+      }
+    });
   }
 
   render() {
@@ -49,9 +51,9 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          {this.renderLoading()}
+          {/* {this.renderLoading()} */}
           <Navbar />
-          <Route path="/question" component={QuestionPage} />
+          <Route path="/question" exact={true} component={QuestionPage} />
           <Route path="/question/new" component={QuestionFormPage} />
           <Route path="/attendance" component={AttendancePage} />
           <Route path="/presentation" component={PresentationPage} />
