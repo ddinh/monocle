@@ -3,10 +3,6 @@ import './AttendancePage.css';
 import { inject, observer } from 'mobx-react';
 
 class AttendancePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { store } = this.props;
     store.send('getStudents');
@@ -23,7 +19,7 @@ class AttendancePage extends React.Component {
   };
 
   render() {
-    const { attendanceUnlocked, code } = this.props.store;
+    const { attendanceUnlocked } = this.props.store;
     const { users } = this.props.store;
 
     return (

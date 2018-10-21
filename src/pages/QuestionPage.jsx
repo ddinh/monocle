@@ -109,7 +109,7 @@ class QuestionPage extends React.Component {
   }
 
   renderQuestion() {
-    const { questionUnlocked, question } = this.props.store;
+    const { question } = this.props.store;
 
     if (question && question.choices) {
       return (
