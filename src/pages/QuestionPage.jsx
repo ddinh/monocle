@@ -106,7 +106,7 @@ class QuestionPage extends React.Component {
   renderQuestion() {
     const { question } = this.props.store;
 
-    if (question) {
+    if (question && question.choices) {
       return (
         <div>
           <div className="message">Question: {question.question}</div>
