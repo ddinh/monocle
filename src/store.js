@@ -18,7 +18,7 @@ class Store {
   }
 
   connect() {
-    var ws = new WebSocket('ws://10.131.222.198:1337');
+    var ws = new WebSocket(`ws://${process.env.REACT_APP_SERVER_IP}:1337`);
 
     const _this = this;
 
