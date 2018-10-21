@@ -1,6 +1,7 @@
 import React from 'react';
 import './QuestionPage.css';
 import socket from '../socket';
+import { Redirect } from 'react-router-dom';
 
 var socketRef;
 var socketRef2;
@@ -13,7 +14,8 @@ export default class QuestionPage extends React.Component {
       id: null,
       answers: {},
       question: {},
-      unlocked: false
+      unlocked: false,
+      redirect: false
     };
   }
 
@@ -40,7 +42,7 @@ export default class QuestionPage extends React.Component {
       }
 
       if (response.type === 'getQuestionDetailsResponse') {
-        console.log('---------')
+        console.log('---------');
         console.log(response);
       }
     };
@@ -64,7 +66,11 @@ export default class QuestionPage extends React.Component {
   };
 
   render() {
-    const { answers } = this.state;
+    const { answers, redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to="/questions/new" />;
+    }
 
     return (
       <div className="question-page">
@@ -77,7 +83,9 @@ export default class QuestionPage extends React.Component {
           <div className="col">
             <div className="row row-header">Name</div>
             {Object.keys(answers).map(name => (
-              <div className="row row-item" key={name}>{name}</div>
+              <div className="row row-item" key={name}>
+                {name}
+              </div>
             ))}
           </div>
           <div className="col">
@@ -92,6 +100,9 @@ export default class QuestionPage extends React.Component {
   }
 
   handleNew = () => {
+    this.setState({
+      redirect: true
+    });
   };
 
   renderButton() {

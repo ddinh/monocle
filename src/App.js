@@ -46,8 +46,6 @@ class App extends Component {
   }
 
   render() {
-    const { connected } = this.state;
-
     return (
       <Router>
         <div className="App">
