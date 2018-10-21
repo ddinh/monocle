@@ -67,7 +67,7 @@ class QuestionPage extends React.Component {
   };
 
   handleRemove = () => {
-    const { store } = this.store;
+    const { store } = this.props;
     store.send('removeQuestion');
   };
 
@@ -80,9 +80,18 @@ class QuestionPage extends React.Component {
       return (
         <div>
           <button onClick={this.handleNew}>New Question</button>
-          { question ? <button onClick={this.handleRemove}>Hide Question</button> : '' }
+          {this.renderHideQuestion()}
         </div>
       );
+    }
+  }
+
+  renderHideQuestion() {
+    const { question } = this.props.store;
+    if (question) {
+      return <button onClick={this.handleRemove}>Remove Question</button>;
+    } else {
+      return <div />;
     }
   }
 
@@ -90,9 +99,9 @@ class QuestionPage extends React.Component {
     const { question } = this.props.store;
 
     if (question) {
-      return <div>Question: {question.question}</div>;
+      return <div className="message">Question: {question.question}</div>;
     } else {
-      return <div className="message">No question in progress.</div>
+      return <div className="message">No question in progress.</div>;
     }
   }
 }

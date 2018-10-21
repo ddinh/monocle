@@ -58,9 +58,10 @@ class QuestionForm extends React.Component {
   };
 
   render() {
-    const { question, redirect } = this.state;
+    const { question } = this.state;
+    const { redirectQuestion } = this.props.store;
 
-    if (redirect) {
+    if (redirectQuestion) {
       return <Redirect to="/question" />;
     }
 
@@ -73,6 +74,8 @@ class QuestionForm extends React.Component {
               type="text"
               className="question"
               value={question}
+              placeholder="e.g. What is 1+1?"
+              autoFocus={true}
               onChange={this.handleQuestionChange}
             />
           </div>
@@ -100,11 +103,15 @@ class QuestionForm extends React.Component {
         <div>
           <div>
             <label htmlFor="">Number of choices</label>
-            <input
-              type="number"
-              value={numChoices}
-              onChange={this.handleChangeNumChoices}
-            />
+            <select value={numChoices} onChange={this.handleChangeNumChoices}>
+              {[...Array(27).keys()].map(i => {
+                return (
+                  <option value={i} key={i}>
+                    {i}
+                  </option>
+                );
+              })}
+            </select>
 
             <label htmlFor="">Answer Choices</label>
             {[...Array(numChoices).keys()].map(i => this.renderChoiceField(i))}
@@ -117,10 +124,12 @@ class QuestionForm extends React.Component {
   };
 
   renderChoiceField(number) {
+    const letter = String.fromCharCode(65 + number);
+
     return (
       <div className="choice" key={number}>
-        <div className="choice-number">{number})</div>
-        <input type="text" onChange={this.handleChoiceChange(number)} />
+        <div className="choice-number">{letter}.</div>
+        <input type="text" onChange={this.handleChoiceChange(letter)} />
       </div>
     );
   }

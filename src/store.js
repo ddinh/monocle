@@ -9,6 +9,7 @@ class Store {
   queue = [];
   code = null;
   questionUnlocked = false;
+  redirectQuestion = false;
   attendanceUnlocked = false;
 
   constructor() {
@@ -44,22 +45,38 @@ class Store {
           _this.answers[e.name] = e.answer;
         });
       } else if (response.type === 'createQuestionResponse') {
+        _this.redirectQuestion = true;
+        setTimeout(() => {
+          _this.redirectQuestion = false;
+        }, 10);
+      } else if (response.type === 'removeQuestionResponse') {
+        _this.question = null;
       } else if (response.type === 'getStudentsResponse') {
         const data = JSON.parse(response.data);
         _this.users = data.users;
         _this.attendanceUnlocked = data.unlocked;
+
+        _this.send('getAttendanceCode');
       } else if (response.type === 'Attendance') {
         if (response.data === 'Attendance closed') {
           _this.attendanceUnlocked = false;
         } else {
           const data = JSON.parse(response.data);
           _this.attendanceUnlocked = true;
-          _this.code = data.code;
+          _this.code = data;
         }
       } else if (response.type === 'getAttendanceCodeResponse') {
         const data = JSON.parse(response.data);
+
         _this.code = data.code;
-        _this.attendanceUnlocked = data.attendanceOpen;
+        _this.attendanceUnlocked =
+          data.attendanceOpen === 'false' ? false : true;
+      } else if (response.type === 'checkinResponse') {
+        const user = response.data;
+        const users = _this.users;
+        users.push(user);
+
+        _this.users = Array.from(new Set(users));
       }
     };
 
@@ -111,5 +128,6 @@ export default decorate(Store, {
   code: observable,
   attendanceUnlocked: observable,
   question: observable,
+  redirectQuestion: observable,
   connect: action
 });

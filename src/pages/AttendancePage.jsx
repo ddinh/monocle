@@ -10,10 +10,6 @@ class AttendancePage extends React.Component {
   componentDidMount() {
     const { store } = this.props;
     store.send('getStudents');
-    
-    setTimeout(() => {
-      store.send('getAttendanceCode');
-    }, 1000);
   }
 
   handleUnlock = () => {
@@ -36,7 +32,7 @@ class AttendancePage extends React.Component {
           <div>
             {this.renderMessage()}
 
-            <div className="code">{code}</div>
+            {this.renderCode()}
 
             <div>
               {!attendanceUnlocked ? (
@@ -52,7 +48,7 @@ class AttendancePage extends React.Component {
           </div>
         </div>
         <div className="col student-col">
-          <div className="row row-header">User</div>
+          <div className="row row-header">Users</div>
           {users.map(name => (
             <div className="row row-item" key={name}>
               {name}
@@ -62,6 +58,15 @@ class AttendancePage extends React.Component {
       </div>
     );
   }
+
+  renderCode = () => {
+    const { code, attendanceUnlocked } = this.props.store;
+    if (attendanceUnlocked) {
+      return <div className="code">{code}</div>;
+    } else {
+      return <div />;
+    }
+  };
 
   renderMessage = () => {
     const { attendanceUnlocked } = this.props.store;
