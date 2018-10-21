@@ -34,7 +34,7 @@ class Store {
 
     ws.onmessage = function(e) {
       const response = JSON.parse(e.data);
-      console.log('Receiving message: ')
+      console.log('Receiving message: ');
       console.log(response);
 
       if (response.type === 'answerQuestion') {
@@ -53,7 +53,7 @@ class Store {
           _this.redirectQuestion = false;
         }, 10);
       } else if (response.type === 'removeQuestionResponse') {
-        _this.question = null;
+        _this.question = {};
         _this.answers = {};
       } else if (response.type === 'getStudentsResponse') {
         const data = JSON.parse(response.data);
@@ -86,9 +86,9 @@ class Store {
         const newValue = _this.transcription + data.text;
 
         if (newValue.length < 266) {
-          _this.transcription = newValue
+          _this.transcription = newValue;
         } else {
-          _this.transcription = ''
+          _this.transcription = '';
         }
       }
     };
