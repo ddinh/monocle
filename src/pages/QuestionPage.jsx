@@ -9,7 +9,6 @@ class QuestionPage extends React.Component {
 
     this.state = {
       id: null,
-      unlocked: false,
       redirect: false
     };
   }
@@ -72,10 +71,16 @@ class QuestionPage extends React.Component {
   };
 
   renderButton() {
-    const { unlocked, question } = this.state;
+    const { questionUnlocked } = this.props.store;
+    console.log(questionUnlocked);
 
-    if (unlocked) {
-      return <button onClick={this.handleLock}>Lock Answering</button>;
+    if (questionUnlocked) {
+      return (
+        <button onClick={this.handleLock}>
+          <i className="material-icons">lock</i>
+          Lock Answering
+        </button>
+      );
     } else {
       return (
         <div className="buttons">
@@ -104,7 +109,7 @@ class QuestionPage extends React.Component {
   }
 
   renderQuestion() {
-    const { question } = this.props.store;
+    const { questionUnlocked, question } = this.props.store;
 
     if (question && question.choices) {
       return (

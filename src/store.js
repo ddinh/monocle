@@ -43,9 +43,12 @@ class Store {
       } else if (response.type === 'getQuestionDetailsResponse') {
         const data = JSON.parse(response.data);
         _this.question = data.question;
+        _this.questionUnlocked = data.unlocked;
         data.answers.forEach(e => {
           _this.answers[e.name] = e.answer;
         });
+      } else if (response.type ==='Question'){
+        _this.questionUnlocked = false;
       } else if (response.type === 'createQuestionResponse') {
         _this.redirectQuestion = true;
         _this.answers = {};
