@@ -5,7 +5,9 @@ import { observer, inject } from 'mobx-react';
 import './PresentationPage.css';
 
 class PresentationPage extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    this.updateChart()
+  }
 
   updateChart = () => {
     var ctx = document.getElementById('myChart');
@@ -69,12 +71,7 @@ class PresentationPage extends React.Component {
 
   render() {
     const { store } = this.props;
-
-    if (store.attendanceUnlocked) {
-      return this.renderAttendanceCode(store.code);
-    } else {
-      return <div />;
-    }
+    return this.renderChart();
   }
 
   renderAttendanceCode(code) {
